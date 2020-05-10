@@ -1,7 +1,7 @@
 package functional
 
 import (
-	"github.com/tkech17/hach_virtual_machine_translator/utils/tests"
+	"github.com/tkech17/jack_compiler/utils/tests"
 	"testing"
 )
 
