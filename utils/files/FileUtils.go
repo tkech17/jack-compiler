@@ -15,6 +15,13 @@ func ReadFile(filename string) string {
 	return string(data)
 }
 
+func Write(filename string, content string) {
+	err := ioutil.WriteFile(filename, []byte(content), 0644)
+	if err != nil {
+		log.Fatal("Could Not Read File")
+	}
+}
+
 func IsDir(path string) bool {
 	return strings.LastIndex(path, ".") == -1
 }
