@@ -23,6 +23,10 @@ func main() {
 }
 
 func compileJackFile(file string) {
+	generateTFile(file)
+}
+
+func generateTFile(file string) {
 	var content string = files.ReadFile(file)
 	var result string = tokenizer.GetTokensContent(content)
 	var targetFilePath string = getTargetFilePath(file)
@@ -32,12 +36,16 @@ func compileJackFile(file string) {
 func getTargetFilePath(file string) string {
 	var targetFolder string = "target/"
 	var fileNameStartIndex int = strings.LastIndex(file, "/") + 1
-	return file[0:fileNameStartIndex] + targetFolder + file[fileNameStartIndex:]
+	halfPath := file[0:fileNameStartIndex] + targetFolder + file[fileNameStartIndex:]
+	halfPath = strings.ReplaceAll(halfPath, ".jack", "")
+	halfPath += "T.xml"
+	return halfPath
 }
 
 func getJackFilesToRead(filename string) []string {
 	if files.IsDir(filename) {
-		return files.GetFilesWithPrefix(filename, ".jack")
+		cwd, _ := os.Getwd()
+		return files.GetFilesWithPrefix(cwd+"/resources/"+filename, ".jack")
 	} else {
 		return []string{filename}
 	}

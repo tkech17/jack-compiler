@@ -1,8 +1,9 @@
 package syntax
 
 import (
-	"strconv"
+	"github.com/tkech17/jack_compiler/utils/maths"
 	"strings"
+	"unicode"
 )
 
 type JackKeywordsAlias = int
@@ -25,7 +26,7 @@ var Enum = &jackKeywordsList{
 	Other:      5,
 }
 
-var TokeTypes []string = []string{"keyword", "symbol", "identifier", "integerConstant", "stringConstant", "none"}
+var TokenTypes []string = []string{"keyword", "symbol", "identifier", "integerConstant", "stringConstant", "none"}
 var ClassKeywords []string = []string{"static", "field"}
 var FunctionTypes []string = []string{"constructor", "function", "method"}
 var VariableTypes []string = []string{"int", "char", "boolean"}
@@ -55,17 +56,12 @@ func GetTokenType(token string) JackKeywordsAlias {
 		return Enum.Keyword
 	} else if strings.HasPrefix(token, "\"") {
 		return Enum.StringType
-	} else if isNumber(token) {
+	} else if maths.IsNumber(token) {
 		return Enum.NumberType
-	} else if token[0] == '_' || strings.ToUpper(token[0:1]) == token[0:1] {
+	} else if token[0] == '_' || unicode.IsLetter(rune(token[0])) {
 		return Enum.Identifier
 	}
 	return Enum.Other
-}
-
-func isNumber(token string) bool {
-	_, err := strconv.Atoi(token)
-	return err == nil
 }
 
 func contains(elements []string, elem string) bool {
